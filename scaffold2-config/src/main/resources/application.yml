@@ -1,0 +1,20 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: scaffold2-config
+  cloud:
+    config:
+      label: master
+      server:
+        git:
+          uri: https://gitee.com/xxxxxx/xxxx.git
+          search-paths: config
+          username: xxxxxxxxx@qq.com
+          password: xxxxxxxxxxxxxxxx
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+
+

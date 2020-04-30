@@ -1,0 +1,27 @@
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: 127.0.0.1
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+logging:
+  file:
+    # 最大保存天数
+    max-history: 7
+    # 每个文件最大大小
+    max-size: 8MB
+  # 输出级别
+  level:
+    # 全局info
+    root: info
+    # 指定包debug
+    cn:
+      king: debug
+  # 日志存放路径
+  # path: e:/scaffold-log
+  path: log
+

@@ -1,0 +1,52 @@
+server:
+  port: 8082
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: scaffold2-producer
+  datasource:
+    url: jdbc:mysql://localhost:3306/scaffold?characterEncoding=UTF-8&serverTimezone=GMT%2B8
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8761/eureka/
+feign:
+  # 启用hystrix熔断器功能
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            # 防止feign调用超时，默认1000
+            timeoutInMilliseconds: 30000
+logging:
+  file:
+    # 最大保存天数
+    max-history: 7
+    # 每个文件最大大小
+    max-size: 8MB
+  # 输出级别
+  level:
+    # 全局info
+    root: info
+    # 指定包debug
+    cn:
+      king: debug
+  # 日志存放路径
+  # path: e:/scaffold-log
+  path: log
