@@ -132,22 +132,6 @@ public interface BaseService<E extends BaseEntity, ID extends Serializable> {
 
     /**
      * @author: wjl@king.cn
-     * @createTime: 2020/4/30 20:15
-     * @param: page
-     * @return: cn.king.domain.data.PageBean<E>
-     * @description: SpringDataJPA自带的Page转自定义的PageBean
-     */
-    default PageBean<E> pageToPageBean(Page<E> page) {
-        PageBean<E> pageBean = new PageBean<>();
-        pageBean.setPageNumber(page.getNumber() + 1);
-        pageBean.setPageSize(page.getSize());
-        pageBean.setTotalRecords(page.getTotalElements());
-        pageBean.setBeanList(page.getContent());
-        return pageBean;
-    }
-
-    /**
-     * @author: wjl@king.cn
      * @createTime: 2020/4/5 16:25
      * @param: name
      * @return: java.util.List<E>
@@ -199,6 +183,22 @@ public interface BaseService<E extends BaseEntity, ID extends Serializable> {
 
     default long count(Specification<E> specification) {
         return getDao().count(specification);
+    }
+
+    /**
+     * @author: wjl@king.cn
+     * @createTime: 2020/4/30 20:15
+     * @param: page
+     * @return: cn.king.domain.data.PageBean<E>
+     * @description: SpringDataJPA自带的Page转自定义的PageBean
+     */
+    default PageBean<E> pageToPageBean(Page<E> page) {
+        PageBean<E> pageBean = new PageBean<>();
+        pageBean.setPageNumber(page.getNumber() + 1);
+        pageBean.setPageSize(page.getSize());
+        pageBean.setTotalRecords(page.getTotalElements());
+        pageBean.setBeanList(page.getContent());
+        return pageBean;
     }
 
 }

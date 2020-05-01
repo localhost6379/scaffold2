@@ -29,14 +29,17 @@ public class Person extends BaseEntity {
 
     @Column(name = "gender")
     private Byte gender;
+
     // 响应到前台的格式
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     // 前台需要传递的格式
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name = "birthday")
     private Date birthday;
+
     @Column(name = "salary")
     private Double salary;
+
     /**
      * 是否结婚
      */

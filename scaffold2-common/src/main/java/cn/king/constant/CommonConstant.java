@@ -4,7 +4,7 @@ package cn.king.constant;
  * 常量
  *
  */
-public class CommonConstant {
+public interface CommonConstant {
 
     public final static Integer STATUS_ENABLE = 1;
     public final static Integer STATUS_DISABLE = 0;

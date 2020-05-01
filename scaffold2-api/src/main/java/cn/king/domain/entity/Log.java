@@ -10,9 +10,9 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "tb_log")
 @ApiModel(value = "日志")
 public class Log extends BaseEntity {

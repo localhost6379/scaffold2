@@ -12,24 +12,26 @@ import java.util.List;
  * @author: wjl@king.cn
  * @createTime: 2019/12/8 20:20
  */
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageBean<T> {
+
     /**
      * 当前页码
      */
     private Integer pageNumber;
+
     /**
      * 每页记录数
      */
     private Integer pageSize;
+
     /**
      * 总记录数
      */
     private Long totalRecords;
+
     /**
      * 每页显示的数据
      */
