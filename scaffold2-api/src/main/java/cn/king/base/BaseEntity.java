@@ -40,6 +40,7 @@ public abstract class BaseEntity implements Serializable {
     @ApiModelProperty(value = "名称 | name")
     private String name;
 
+    // 默认会将驼峰转下划线定义为表字段名
     @ApiModelProperty(value = "排序值 | Record sort order")
     private Integer sortOrder;
 
@@ -70,15 +71,27 @@ public abstract class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新者 | Record updated by")
     private String updatedBy;
 
+    @Transient
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "起始创建时间，用于范围查询")
     private Date createdTimeBegin;
 
+    @Transient
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "结束创建时间，用于范围查询")
     private Date createdTimeEnd;
 
+    @Transient
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "起始最后更新时间，用于范围查询")
     private Date updatedTimeBegin;
 
+    @Transient
+    @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "结束最后更新时间，用于范围查询")
     private Date updatedTimeEnd;
 
