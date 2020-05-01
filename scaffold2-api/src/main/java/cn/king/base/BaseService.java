@@ -2,16 +2,20 @@ package cn.king.base;
 
 import cn.king.domain.data.PageBean;
 import cn.king.domain.vo.PageVO;
+import cn.king.util.DateTimeUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.criteria.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 基础Service，包含一些通用的方法
@@ -91,7 +95,10 @@ public interface BaseService<E extends BaseEntity, ID extends Serializable> {
 
         if (pageVO == null) pageVO = new PageVO();
 
-        Pageable pageable = PageRequest.of(pageVO.getPageNumber() - 1, pageVO.getPageSize());
+        // 按照排序值降序，排序值为int类型，值越大数据越靠前。排序值相同按照最后更新时间降序。
+        Sort sort = Sort.by(Sort.Order.desc("sortOrder"), Sort.Order.asc("updatedTime"));
+
+        Pageable pageable = PageRequest.of(pageVO.getPageNumber() - 1, pageVO.getPageSize(), sort);
 
         if (queryCondition == null) return this.pageToPageBean(getDao().findAll(pageable));
 
@@ -99,6 +106,7 @@ public interface BaseService<E extends BaseEntity, ID extends Serializable> {
             @Override
             public Predicate toPredicate(Root<E> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 
+                // 所有的断言
                 List<Predicate> predicateList = new ArrayList<>();
 
                 // 默认搜索条件
@@ -112,7 +120,18 @@ public interface BaseService<E extends BaseEntity, ID extends Serializable> {
                     predicateList.add(cb.equal(statusField, queryCondition.getStatus()));
                 }
 
+                Optional<Date> createdTimeBeginOptional = Optional.ofNullable(queryCondition.getCreatedTimeBegin());
+                Optional<Date> createdTimeEndOptional = Optional.ofNullable(queryCondition.getCreatedTimeEnd());
+                Optional<Date> updatedTimeBeginOptional = Optional.ofNullable(queryCondition.getUpdatedTimeBegin());
+                Optional<Date> updatedTimeEndOptional = Optional.ofNullable(queryCondition.getUpdatedTimeEnd());
+
+                createdTimeBeginOptional.ifPresent(createdTimeBegin -> predicateList.add(cb.greaterThanOrEqualTo(root.get("createdTime").as(String.class), DateTimeUtils.getDateTime(createdTimeBegin))));
+                createdTimeEndOptional.ifPresent(createdTimeEnd -> predicateList.add(cb.lessThanOrEqualTo(root.get("createdTime").as(String.class), DateTimeUtils.getDateTime(createdTimeEnd))));
+                updatedTimeBeginOptional.ifPresent(updatedTimeBegin -> predicateList.add(cb.greaterThanOrEqualTo(root.get("updatedTime").as(String.class), DateTimeUtils.getDateTime(updatedTimeBegin))));
+                updatedTimeEndOptional.ifPresent(updatedTimeEnd -> predicateList.add(cb.lessThanOrEqualTo(root.get("updatedTime").as(String.class), DateTimeUtils.getDateTime(updatedTimeEnd))));
+
                 Predicate[] arr = new Predicate[predicateList.size()];
+                // 构造条件And
                 return cb.and(predicateList.toArray(arr));
             }
         };

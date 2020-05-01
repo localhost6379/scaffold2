@@ -6,8 +6,11 @@ import lombok.Data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -22,6 +25,8 @@ import java.util.Date;
  */
 @Data
 @MappedSuperclass
+// 该注解能配合@CreatedDate、@LastModifiedDate等注解使用。https://www.jianshu.com/p/30aef87f3171
+@EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,11 +62,25 @@ public abstract class BaseEntity implements Serializable {
     @ApiModelProperty(value = "更新时间 | Record updated time")
     private Date updatedTime;
 
+    @CreatedBy
     @ApiModelProperty(value = "创建者 | Record Created by")
     private String createdBy;
 
+    @LastModifiedBy
     @ApiModelProperty(value = "更新者 | Record updated by")
     private String updatedBy;
+
+    @ApiModelProperty(value = "起始创建时间，用于范围查询")
+    private Date createdTimeBegin;
+
+    @ApiModelProperty(value = "结束创建时间，用于范围查询")
+    private Date createdTimeEnd;
+
+    @ApiModelProperty(value = "起始最后更新时间，用于范围查询")
+    private Date updatedTimeBegin;
+
+    @ApiModelProperty(value = "结束最后更新时间，用于范围查询")
+    private Date updatedTimeEnd;
 
     @Override
     public String toString() {
