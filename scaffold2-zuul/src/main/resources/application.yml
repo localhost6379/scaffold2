@@ -7,6 +7,22 @@ eureka:
   client:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka/
+
+zuul:
+  routes:
+    scaffold-producer-api:
+      path: /producer/api/**
+      serviceId: scaffold2-producer
+    scaffold-consumer-api:
+      path: /consumer/api/**
+      serviceId: scaffold2-consumer
+  ignored-services: scaffold2-producer,scaffold2-consumer
+
+# 防止出现504网关超时
+ribbon:
+  ReadTimeout: 120000     #请求处理的超时时间
+  ConnectTimeout: 120000  #请求连接的超时时间
+
 logging:
   file:
     # 最大保存天数
@@ -23,13 +39,5 @@ logging:
   # 日志存放路径
   # path: e:/scaffold-log
   path: log
-zuul:
-  routes:
-    scaffold-producer-api:
-      path: /producer/api/**
-      serviceId: scaffold2-producer
-    scaffold-consumer-api:
-      path: /consumer/api/**
-      serviceId: scaffold2-consumer
-  ignored-services: scaffold2-producer,scaffold2-consumer
+
 

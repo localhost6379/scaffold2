@@ -21,9 +21,9 @@ import java.util.List;
 public class PersonServiceFeignFallback implements PersonServiceFeign {
 
     @Override
-    public DataResult save(Person entity) {
+    public DataResult<Person> save(Person entity) {
         log.error("cn.king.feign.fallback.PersonServiceFeignFallback.save 熔断了!");
-        return this.fallback();
+        return new DataResult<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "熔断了!");
     }
 
     @Override

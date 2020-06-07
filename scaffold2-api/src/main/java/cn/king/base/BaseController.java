@@ -32,9 +32,9 @@ public abstract class BaseController<E extends BaseEntity, ID extends Serializab
     @Log
     @PostMapping
     @ApiOperation("添加")
-    public DataResult save(@RequestBody E entity) {
+    public DataResult<E> save(@RequestBody E entity) {
         E e = this.getService().save(entity);
-        return e == null ? DataResult.error() : DataResult.ok();
+        return e == null ? new DataResult<E>(500, "系统错误") : new DataResult<E>(e);
     }
 
     @Log
@@ -89,8 +89,8 @@ public abstract class BaseController<E extends BaseEntity, ID extends Serializab
     @ApiOperation("条件查询并分页。支持：name模糊查询、status精确查询、创建时间范围查询、更新时间范围查询。默认排序：按照排序值降序，排序值相同按照更新时间升序。")
     @PostMapping("/list/{pageNumber}/{pageSize}")
     public DataResult<PageBean<E>> findByCondition(@PathVariable Integer pageNumber,
-                                               @PathVariable Integer pageSize,
-                                               @RequestBody(required = false) E queryCondition) {
+                                                   @PathVariable Integer pageSize,
+                                                   @RequestBody(required = false) E queryCondition) {
         PageBean<E> pageBean = getService().findByCondition(new PageVO(pageNumber, pageSize), queryCondition);
         return pageBean == null ? new DataResult<PageBean<E>>(500, "系统错误") : new DataResult<PageBean<E>>(pageBean);
     }

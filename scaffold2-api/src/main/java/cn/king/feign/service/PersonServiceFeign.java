@@ -15,7 +15,7 @@ public interface PersonServiceFeign {
     String PREFIX = "/person";
 
     @PostMapping(PREFIX)
-    DataResult save(@RequestBody Person entity);
+    DataResult<Person> save(@RequestBody Person entity);
 
     @DeleteMapping(PREFIX + "/{id}")
     DataResult deleteById(@PathVariable Long id);
