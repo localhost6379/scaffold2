@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Date;
 
 /**
@@ -135,6 +136,18 @@ public class DateTimeUtils {
      */
     public static Date localDateTimeToDate(LocalDateTime localDateTime) {
         return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * @author: wjl@king.cn
+     * @createTime: 2020/8/26 11:21
+     * @param: day
+     * @return: long
+     * @description: 获取当前时间+day天的毫秒值. day可以负数.
+     */
+    public static long getTimeMillis(int day) {
+        LocalDateTime currentTime = new Date(System.currentTimeMillis()).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return currentTime.minusDays(day).toInstant(ZoneOffset.of("+8")).toEpochMilli();
     }
 
     /**
